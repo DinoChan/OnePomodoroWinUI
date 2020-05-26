@@ -1,0 +1,343 @@
+﻿<local:PomodoroView x:Class="OnePomodoro.PomodoroViews.GradientsWithBlend"
+                    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="using:OnePomodoro.PomodoroViews"
+                    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                    mc:Ignorable="d"
+                    xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+                    xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+                    xmlns:viewModels="using:OnePomodoro.ViewModels"
+                    xmlns:helpers="using:OnePomodoro.Helpers"
+                    x:DefaultBindMode="OneWay"
+                    xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
+                    xmlns:controls1="using:OnePomodoro.Controls"
+                    d:DataContext="{d:DesignInstance Type=viewModels:PomodoroViewModel}"
+                    RequestedTheme="Light"
+                    d:DesignHeight="1050"
+                    d:DesignWidth="1920">
+    <UserControl.Resources>
+        <converters:BoolToObjectConverter TrueValue="Top"
+                                          FalseValue="Bottom"
+                                          x:Key="BoolToVerticalAlignmentConverter" />
+        <converters:BoolToObjectConverter TrueValue="Left"
+                                          FalseValue="Right"
+                                          x:Key="BoolToVerticalHorizontalAlignment" />
+        <Style TargetType="TextBlock">
+            <Setter Property="FontWeight"
+                    Value="SemiLight" />
+        </Style>
+    </UserControl.Resources>
+    <Grid x:Name="ContentArea" >
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup>
+                <VisualState>
+                    <VisualState.StateTriggers>
+                        <helpers:IsCompactOverlayModeTrigger TargetElement="{x:Bind}" />
+                    </VisualState.StateTriggers>
+                    <VisualState.Setters>
+                        <Setter Target="CompactView.Opacity"
+                                Value="1" />
+                        <Setter Target="CompactView.IsHitTestVisible"
+                                Value="True" />
+                        <Setter Target="NormalView.Opacity"
+                                Value="0" />
+                        <Setter Target="NormalView.IsHitTestVisible"
+                                Value="False" />
+                    </VisualState.Setters>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        <Rectangle x:Name="Gradient" />
+        <Grid>
+            <Grid x:Name="NormalView" >
+
+                <StackPanel Orientation="Horizontal"
+                            MinWidth="690"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <StackPanel Orientation="Horizontal"
+                                Margin="16,28"
+                                x:Name="ButtonRoot"
+                                Visibility="Collapsed"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top">
+                        <animations:Implicit.ShowAnimations>
+                            <animations:TranslationAnimation SetInitialValueBeforeDelay="True"
+                                                             From="0,-120,0"
+                                                             To="0,0,0"
+                                                             Duration="0:0:0.6" />
+                            <animations:OpacityAnimation SetInitialValueBeforeDelay="True"
+                                                         From="0"
+                                                         To="1"
+                                                         Duration="0:0:0.6" />
+                        </animations:Implicit.ShowAnimations>
+                        <controls1:PomodoroStateButton controls1:DropShadowPanel.BlurRadius="8"
+                                                       controls1:DropShadowPanel.OffsetY="2"
+                                                       controls1:DropShadowPanel.ShadowOpacity="0.3"
+                                                       HorizontalAlignment="Left"
+                                                       VerticalAlignment="Bottom"
+                                                       StartCommand="{Binding StartTimerCommand}"
+                                                       StopCommand="{Binding StopTimerCommand}"
+                                                       IsInPomodoro="{x:Bind ViewModel.IsInPomodoro}"
+                                                       IsTimerInProgress="{x:Bind ViewModel.IsTimerInProgress}" />
+                    </StackPanel>
+                    <Grid>
+                        <StackPanel x:Name="FocusText"
+                                    Visibility="Collapsed">
+                            <animations:Implicit.HideAnimations>
+                                <animations:TranslationAnimation SetInitialValueBeforeDelay="True"
+                                                                 From="0,0,0"
+                                                                 To="0,-120,0"
+                                                                 Duration="0:0:0.6" />
+                                <animations:OpacityAnimation SetInitialValueBeforeDelay="True"
+                                                             From="1"
+                                                             To="0"
+                                                             Duration="0:0:0.6" />
+                            </animations:Implicit.HideAnimations>
+                            <animations:Implicit.ShowAnimations>
+                                <animations:TranslationAnimation SetInitialValueBeforeDelay="True"
+                                                                 From="0,-120,0"
+                                                                 To="0,0,0"
+                                                                 Duration="0:0:0.6" />
+                                <animations:OpacityAnimation SetInitialValueBeforeDelay="True"
+                                                             From="0"
+                                                             To="1"
+                                                             Duration="0:0:0.6" />
+                            </animations:Implicit.ShowAnimations>
+                            <controls:DropShadowPanel BlurRadius="8"
+                                                      OffsetY="2"
+                                                      ShadowOpacity="0.3"
+                                                      HorizontalAlignment="Left">
+                                <TextBlock FontSize="72"
+                                           Foreground="White"
+                                           Text="Focus on my work" />
+                            </controls:DropShadowPanel>
+                            <controls:DropShadowPanel BlurRadius="8"
+                                                      OffsetY="2"
+                                                      ShadowOpacity="0.3"
+                                                      HorizontalAlignment="Left"
+                                                      Margin="0,-16,0,0">
+                                <TextBlock Text="{Binding RemainingPomodoroTime,Converter={StaticResource FormatStringConverter},ConverterParameter=mm\\:ss}"
+                                           FontSize="60"
+                                           Foreground="White" />
+                            </controls:DropShadowPanel>
+                        </StackPanel>
+
+
+                        <StackPanel x:Name="RelaxText"
+                                    Visibility="Collapsed">
+                            <animations:Implicit.HideAnimations>
+                                <animations:TranslationAnimation SetInitialValueBeforeDelay="True"
+                                                                 From="0,0,0"
+                                                                 To="0,120,0"
+                                                                 Duration="0:0:0.6" />
+                                <animations:OpacityAnimation SetInitialValueBeforeDelay="True"
+                                                             From="1"
+                                                             To="0"
+                                                             Duration="0:0:0.6" />
+                            </animations:Implicit.HideAnimations>
+                            <animations:Implicit.ShowAnimations>
+                                <animations:TranslationAnimation SetInitialValueBeforeDelay="True"
+                                                                 From="0,120,0"
+                                                                 To="0,0,0"
+                                                                 Duration="0:0:0.6" />
+                                <animations:OpacityAnimation SetInitialValueBeforeDelay="True"
+                                                             From="0"
+                                                             To="1"
+                                                             Duration="0:0:0.6" />
+                            </animations:Implicit.ShowAnimations>
+                            <controls:DropShadowPanel HorizontalAlignment="Left"
+                                                      VerticalAlignment="Center"
+                                                      BlurRadius="8"
+                                                      OffsetY="2"
+                                                      ShadowOpacity="0.3">
+
+                                <TextBlock FontSize="72"
+                                           Foreground="White"
+                                           Text="Take a rest" />
+                            </controls:DropShadowPanel>
+
+                            <controls:DropShadowPanel HorizontalAlignment="Left"
+                                                      VerticalAlignment="Center"
+                                                      BlurRadius="8"
+                                                      OffsetY="2"
+                                                      Margin="0,-16,0,0"
+                                                      ShadowOpacity="0.3">
+
+                                <TextBlock Text="{Binding RemainingBreakTime,Converter={StaticResource FormatStringConverter},ConverterParameter=mm\\:ss}"
+                                           FontSize="60"
+                                           Foreground="White" />
+
+                            </controls:DropShadowPanel>
+
+                        </StackPanel>
+
+                    </Grid>
+                </StackPanel>
+
+
+                <controls:DropShadowPanel x:Name="MiddleText"
+                                          Grid.RowSpan="2"
+                                          Grid.ColumnSpan="2"
+                                          HorizontalAlignment="Center"
+                                          VerticalAlignment="Center"
+                                          BlurRadius="8"
+                                          OffsetY="2"
+                                          Opacity="0.7"
+                                          ShadowOpacity="0.2">
+                    <animations:Implicit.HideAnimations>
+                        <animations:TranslationAnimation Delay="0:0:2.2"
+                                                         SetInitialValueBeforeDelay="True"
+                                                         From="0,0,0"
+                                                         To="0,40,0"
+                                                         Duration="0:0:0.6" />
+                        <animations:OpacityAnimation Delay="0:0:2.2"
+                                                     SetInitialValueBeforeDelay="True"
+                                                     From="1"
+                                                     To="0"
+                                                     Duration="0:0:0.6" />
+                    </animations:Implicit.HideAnimations>
+                    <TextBlock FontSize="48"
+                               FontWeight="Bold"
+                               Foreground="White">
+                        <Run Text="One Pomodoro" />
+                        <LineBreak />
+                       <Run FontSize="64"
+                            FontWeight="SemiLight"
+                            Text="  Gradients x Blend" />
+                    </TextBlock>
+                </controls:DropShadowPanel>
+            </Grid>
+
+
+            <Grid x:Name="CompactView" IsHitTestVisible="False" Opacity="0">
+                <Viewbox>
+                    <Grid 
+                                Width="100" Height="75"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center">
+                        
+                        <Grid Margin="4,-7,4,0">
+                            <StackPanel x:Name="FocusTextCompact">
+                                <animations:Implicit.HideAnimations>
+                                    <animations:TranslationAnimation SetInitialValueBeforeDelay="True"
+                                                                     From="0,0,0"
+                                                                     To="0,-20,0"
+                                                                     Duration="0:0:0.6" />
+                                    <animations:OpacityAnimation SetInitialValueBeforeDelay="True"
+                                                                 From="1"
+                                                                 To="0"
+                                                                 Duration="0:0:0.6" />
+                                </animations:Implicit.HideAnimations>
+                                <animations:Implicit.ShowAnimations>
+                                    <animations:TranslationAnimation SetInitialValueBeforeDelay="True"
+                                                                     From="0,-20,0"
+                                                                     To="0,0,0"
+                                                                     Duration="0:0:0.6" />
+                                    <animations:OpacityAnimation SetInitialValueBeforeDelay="True"
+                                                                 From="0"
+                                                                 To="1"
+                                                                 Duration="0:0:0.6" />
+                                </animations:Implicit.ShowAnimations>
+                                <controls:DropShadowPanel BlurRadius="8"
+                                                          OffsetY="2"
+                                                          ShadowOpacity="0.3"
+                                                          HorizontalAlignment="Left">
+                                    <TextBlock FontSize="36"
+                                               Foreground="White"
+                                               Text="Focus" />
+                                </controls:DropShadowPanel>
+                                <controls:DropShadowPanel BlurRadius="8"
+                                                          OffsetY="2"
+                                                          ShadowOpacity="0.3"
+                                                          HorizontalAlignment="Left"
+                                                          Margin="20,-8,0,0">
+                                    <TextBlock Text="{Binding RemainingPomodoroTime,Converter={StaticResource FormatStringConverter},ConverterParameter=mm\\:ss}"
+                                               FontSize="30"
+                                               Foreground="White" />
+                                </controls:DropShadowPanel>
+                            </StackPanel>
+
+
+                            <StackPanel x:Name="RelaxTextCompact" Visibility="Collapsed">
+                                <animations:Implicit.HideAnimations>
+                                    <animations:TranslationAnimation SetInitialValueBeforeDelay="True"
+                                                                     From="0,0,0"
+                                                                     To="0,20,0"
+                                                                     Duration="0:0:0.6" />
+                                    <animations:OpacityAnimation SetInitialValueBeforeDelay="True"
+                                                                 From="1"
+                                                                 To="0"
+                                                                 Duration="0:0:0.6" />
+                                </animations:Implicit.HideAnimations>
+                                <animations:Implicit.ShowAnimations>
+                                    <animations:TranslationAnimation SetInitialValueBeforeDelay="True"
+                                                                     From="0,20,0"
+                                                                     To="0,0,0"
+                                                                     Duration="0:0:0.6" />
+                                    <animations:OpacityAnimation SetInitialValueBeforeDelay="True"
+                                                                 From="0"
+                                                                 To="1"
+                                                                 Duration="0:0:0.6" />
+                                </animations:Implicit.ShowAnimations>
+                                <controls:DropShadowPanel HorizontalAlignment="Left"
+                                                          VerticalAlignment="Center"
+                                                          BlurRadius="8"
+                                                          OffsetY="2"
+                                                          ShadowOpacity="0.3">
+
+                                    <TextBlock FontSize="36"
+                                               Foreground="White"
+                                               Text="Relax" />
+                                </controls:DropShadowPanel>
+
+                                <controls:DropShadowPanel HorizontalAlignment="Left"
+                                                          VerticalAlignment="Center"
+                                                          BlurRadius="8"
+                                                          OffsetY="2"
+                                                          Margin="20,-8,0,0"
+                                                          ShadowOpacity="0.3">
+
+                                    <TextBlock Text="{Binding RemainingBreakTime,Converter={StaticResource FormatStringConverter},ConverterParameter=mm\\:ss}"
+                                               FontSize="30"
+                                               Foreground="White" />
+
+                                </controls:DropShadowPanel>
+
+                            </StackPanel>
+
+                        </Grid>
+                        <Grid Margin="3,9"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Bottom">
+                            <animations:Implicit.ShowAnimations>
+                                <animations:TranslationAnimation SetInitialValueBeforeDelay="True"
+                                                                 From="0,-20,0"
+                                                                 To="0,0,0"
+                                                                 Duration="0:0:0.6" />
+                                <animations:OpacityAnimation SetInitialValueBeforeDelay="True"
+                                                             From="0"
+                                                             To="1"
+                                                             Duration="0:0:0.6" />
+                            </animations:Implicit.ShowAnimations>
+                            <controls1:PomodoroStateButton controls1:DropShadowPanel.BlurRadius="8"
+                                                           controls1:DropShadowPanel.OffsetY="2"
+                                                           controls1:DropShadowPanel.ShadowOpacity="0.3"
+                                                           HorizontalAlignment="Left"
+                                                           VerticalAlignment="Bottom"
+                                                           Height="20"
+                                                           Width="20"
+                                                           StartCommand="{Binding StartTimerCommand}"
+                                                           StopCommand="{Binding StopTimerCommand}"
+                                                           IsInPomodoro="{x:Bind ViewModel.IsInPomodoro}"
+                                                           IsTimerInProgress="{x:Bind ViewModel.IsTimerInProgress}" />
+                        </Grid>
+                    </Grid>
+                </Viewbox>
+
+
+            </Grid>
+        </Grid>
+    </Grid>
+</local:PomodoroView>

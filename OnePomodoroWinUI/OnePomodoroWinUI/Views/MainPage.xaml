@@ -1,0 +1,46 @@
+﻿<Page x:Class="OnePomodoro.Views.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      Style="{StaticResource PageStyle}"
+      xmlns:appmodel="using:Windows.ApplicationModel"
+      xmlns:prismMvvm="using:Prism.Windows.Mvvm"
+      prismMvvm:ViewModelLocator.AutoWireViewModel="True"
+      xmlns:viewModels="using:OnePomodoro.ViewModels"
+      xmlns:helpers="using:OnePomodoro.Helpers"
+      xmlns:converters="using:Microsoft.Toolkit.Uwp.UI.Converters"
+      xmlns:animations="using:Microsoft.Toolkit.Uwp.UI.Animations"
+      xmlns:controls="using:OnePomodoro.Controls"
+      d:DataContext="{d:DesignInstance Type=viewModels:MainViewModel}"
+      RequestedTheme="Dark"
+      mc:Ignorable="d">
+    <Grid>
+        <ContentControl x:Name="PomodoroContent"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch" />
+        <controls:TitleBar VerticalAlignment="Top"
+                           IsTitleVisibile="False">
+            <controls:TitleBar.Buttons>
+                <Button x:Name="OptionsButton"
+                        Click="OnOptionsClick"
+                        Content="&#xE700;"
+                        ToolTipService.ToolTip="Options" />
+                <Button x:Name="FullScreenButton"
+                        Click="OnFullScreenClick"
+                        Content="&#xE92D;"
+                        ToolTipService.ToolTip="FullScreen" />
+                <Button x:Name="PinButton"
+                        Click="OnPinClick"
+                        Content="&#xE141;"
+                        ToolTipService.ToolTip="Pin" />
+                <Button x:Name="UnpinButton"
+                        Click="OnUnpinClick"
+                        Content="&#xE196;"
+                        ToolTipService.ToolTip="Unpin"
+                        Visibility="Collapsed"/>
+            </controls:TitleBar.Buttons>
+        </controls:TitleBar>
+    </Grid>
+
+</Page>
